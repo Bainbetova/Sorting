@@ -1,14 +1,10 @@
-﻿/* Файл ... */
+﻿/* Файл Sorting */
 /* Баинбетова Владлена Владиславна */
-/* Программа ... */
+/* Программа Sorting */
 /* Основной модуль */
 /* 07.02.2021 */
 
-#include <iostream>
-#include <conio.h>
-#include <clocale>
-
-using namespace std;
+#include "Sorting.h"
 
 void qsortRecursive(int *arr, int size);
 
