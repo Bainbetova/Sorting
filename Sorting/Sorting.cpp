@@ -8,6 +8,8 @@
 
 void qsortRecursive(int *arr, int size);
 
+void qsortRecursive(int *arr, int size);
+
 void menu(int *arr);
 
 int* filling_arr(int n);
@@ -33,11 +35,9 @@ int main()
 	for (int i = 0; i < 5; i++) {
 		if (!(count[i] >= 48 && count[i] <= 57) && count[i] != 0) {
 			cout << "Введено недопустимое значение.";
-		}
-		else if (count[i] == 0) {
+		} else if (count[i] == 0) {
 			break;
-		}
-		else {
+		} else {
 			flag++;
 			size[i] = charToInt(count[i]);
 		}
@@ -55,6 +55,7 @@ int main()
 	return 0;
 }
 
+// Быстрая сортировка
 void qsortRecursive(int *arr, int size) {
 	// Указатели в начало и в конец массива
 	int i = 0;
@@ -99,6 +100,27 @@ void qsortRecursive(int *arr, int size) {
 	return;
 }
 
+// Сортировка подсчетом сравнений 
+int* sort(int *arr, int size) {
+	int* arr1 = new int[size];
+	int* count = new int[size];
+	for (int i = size; i > 1; i--) {
+		for (int j = i - 1; j > 0; j--) {
+			if (arr[i] < arr[j]) {
+				count[j]++;
+			} else {
+				count[i]++;
+			}
+		}
+	}
+	for (int j(1); j < size + 1; j++) {
+		arr1[count[j] + 1] = arr[j];
+	}
+	delete[]arr1;
+	delete[]count;
+	return arr1;
+}
+
 void menu(int *arr) {
 	char choice, count;
 	int size = 0;
@@ -136,6 +158,9 @@ void menu(int *arr) {
 int* filling_arr(int n) {
 	int *arr = new int[n];
 	int num = 0;
+
+	srand((unsigned)time(NULL));
+
 	for (int i = 0; i < n; i++) {
 		num = rand() % 10000 + 1; // случайные числа от 0 до 10000
 		arr[i] = num;
