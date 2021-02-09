@@ -8,8 +8,6 @@
 
 void qsortRecursive(int *arr, int size);
 
-void qsortRecursive(int *arr, int size);
-
 void menu(int *arr);
 
 int* filling_arr(int n);
@@ -20,14 +18,19 @@ int parsingChar(int* size, int defSize, int flag);
 
 void show(int* arr, int n);
 
-int main()
-{
+int* copyArray(int* arr, int n);
+
+void coctailSort(int *arr, int size);
+
+void coctailSort(int *arr, int size);
+
+int main() {
 	setlocale(LC_ALL, "");
 	int *arr = 0;
 	int flag = 0, numb = 0;
 	int const defSize = 5;
 	int size[defSize];
-	char count[5];
+	char count[11];
 
 	system("cls");
 	cout << "Введите желаемое количество элементов:";
@@ -42,16 +45,38 @@ int main()
 			size[i] = charToInt(count[i]);
 		}
 	}
-	numb = parsingChar(size, defSize, flag);
-	int* arrResult = new int[numb]; // скопировать массив arr сюда
+	numb = parsingChar(size, defSize, flag);	
 	arr = filling_arr(numb);
-	cout << "Элементы до сортировки:";
-	show(arr, numb);
-	cout << "\nРезультаты сортировок:";
+	int* arrResult = copyArray(arr, numb); 
+	int* arrCoct = copyArray(arr, numb);
+	int* arrShell = copyArray(arr, numb);
+	//cout << "Элементы до сортировки:";
+	//show(arr, numb);
+	cout << "\nРезультаты времени работы сортировок";
+	
+	clock_t start = clock();
 	qsortRecursive(arrResult, numb);
-	show(arrResult, numb);
+	clock_t finish = clock();
+	cout << "\nБыстрая сортировка: " << (double)(finish - start) / CLOCKS_PER_SEC;
+	
+	start = clock();
+	coctailSort(arrCoct, numb);
+	finish = clock();
+	cout << "\nШейкер сортировка: " << (double)(finish - start) / CLOCKS_PER_SEC;
+
+	start = clock();
+	ShellSort(arrShell, numb);
+	finish = clock();
+	cout << "\nCортировка Шелла: " << (double)(finish - start) / CLOCKS_PER_SEC << endl;
+
+	//cout << "\nОтсортированный массив: ";
+	//show(arrShell, numb);
+
 	delete[]arr;
 	delete[]arrResult;
+	delete[]arrCoct;
+	delete[]arrShell;
+
 	return 0;
 }
 
@@ -100,27 +125,6 @@ void qsortRecursive(int *arr, int size) {
 	return;
 }
 
-// Сортировка подсчетом сравнений 
-int* sort(int *arr, int size) {
-	int* arr1 = new int[size];
-	int* count = new int[size];
-	for (int i = size; i > 1; i--) {
-		for (int j = i - 1; j > 0; j--) {
-			if (arr[i] < arr[j]) {
-				count[j]++;
-			} else {
-				count[i]++;
-			}
-		}
-	}
-	for (int j(1); j < size + 1; j++) {
-		arr1[count[j] + 1] = arr[j];
-	}
-	delete[]arr1;
-	delete[]count;
-	return arr1;
-}
-
 void menu(int *arr) {
 	char choice, count;
 	int size = 0;
@@ -137,8 +141,7 @@ void menu(int *arr) {
 			cin >> count;
 			if (!(count >= 48 && count <= 57)) {
 				cout << "Введено недопустимое значение.";
-			}
-			else {
+			} else {
 				size = (int)count;
 				// вызов функции заполнения
 			}
@@ -162,7 +165,7 @@ int* filling_arr(int n) {
 	srand((unsigned)time(NULL));
 
 	for (int i = 0; i < n; i++) {
-		num = rand() % 10000 + 1; // случайные числа от 0 до 10000
+		num = rand() % 100000 + 1; // случайные числа от 0 до 100 000
 		arr[i] = num;
 	}
 	return arr;
@@ -176,6 +179,13 @@ int charToInt(char c) {
 int parsingChar(int* size, int defSize, int flag) {
 	int result = 0;
 	for (int i = flag; i > 0; i--) {
+		if (i == flag - 11) result += size[i - 1] * 1000000000000;
+		if (i == flag - 10) result += size[i - 1] * 100000000000;
+		if (i == flag - 9) result += size[i - 1] * 1000000000;
+		if (i == flag - 8) result += size[i - 1] * 100000000;
+		if (i == flag - 7) result += size[i - 1] * 10000000;
+		if (i == flag - 6) result += size[i - 1] * 1000000;
+		if (i == flag - 5) result += size[i - 1] * 100000;
 		if (i == flag - 4) result += size[i - 1] * 10000;
 		if (i == flag - 3) result += size[i - 1] * 1000;
 		if (i == flag - 2) result += size[i - 1] * 100;
@@ -188,6 +198,59 @@ int parsingChar(int* size, int defSize, int flag) {
 void show(int* arr, int n) {
 	for (int i = 0; i < n; i++) {
 		cout << arr[i] << " ";
-		if (i % 10 == 0) cout << "\n";
+		if (i % 20 == 0) cout << "\n";
 	}
+}
+
+int* copyArray(int* arr, int n) {
+	int* arrRes = new int[n];
+	for (int i = 0; i < n; i++) {
+		arrRes[i] = arr[i];
+	}
+	return arrRes;
+}
+
+// Шейкер-сортировка
+void coctailSort(int *arr, int size) {
+	int buff;
+	int control = size;
+	int left = 0;
+	int right = size - 1;
+	do {
+		for (int i = left; i < right; i++) {
+			if (arr[i] > arr[i + 1]) {
+				buff = arr[i];
+				arr[i] = arr[i + 1];
+				arr[i + 1] = buff;
+				control = i;
+			}
+		}
+		right = control;
+		for (int i = right; i > left; i--) {
+			if (arr[i] < arr[i - 1]) {
+				buff = arr[i];
+				arr[i] = arr[i - 1];
+				arr[i - 1] = buff;
+				control = i;
+			}
+		}
+		left = control;
+	} while (left < right);
+	return;
+}
+
+// Сортировка Шелла
+void ShellSort(int *arr, int size) {
+	for (int s = size / 2; s > 0; s /= 2) {
+		for (int i = 0; i < size; i++) {
+			for (int j = i + s; j < size; j += s) {
+				if (arr[i] > arr[j]) {
+					int temp = arr[j];
+					arr[j] = arr[i];
+					arr[i] = temp;
+				}
+			}
+		}
+	}
+	return;
 }
