@@ -30,7 +30,7 @@ int main() {
 	int flag = 0, numb = 0;
 	int const defSize = 5;
 	int size[defSize];
-	char count[11];
+	char count[9];
 
 	system("cls");
 	cout << "Введите желаемое количество элементов:";
@@ -179,8 +179,6 @@ int charToInt(char c) {
 int parsingChar(int* size, int defSize, int flag) {
 	int result = 0;
 	for (int i = flag; i > 0; i--) {
-		if (i == flag - 11) result += size[i - 1] * 1000000000000;
-		if (i == flag - 10) result += size[i - 1] * 100000000000;
 		if (i == flag - 9) result += size[i - 1] * 1000000000;
 		if (i == flag - 8) result += size[i - 1] * 100000000;
 		if (i == flag - 7) result += size[i - 1] * 10000000;
