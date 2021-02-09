@@ -22,7 +22,7 @@ int* copyArray(int* arr, int n);
 
 void coctailSort(int *arr, int size);
 
-void coctailSort(int *arr, int size);
+void ShellSort(int *arr, int size);
 
 int main() {
 	setlocale(LC_ALL, "");
